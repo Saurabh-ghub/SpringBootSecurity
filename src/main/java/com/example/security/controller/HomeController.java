@@ -11,12 +11,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @RestController
+@RequestMapping("/")
 public class HomeController {
 
     Student stud1 = new Student(0, "Saurabh", 94);
@@ -26,14 +30,21 @@ public class HomeController {
 
     @GetMapping("/")
     public String getMethodName(HttpServletRequest httpServletRequest) {
-        return "Welcome Home" + httpServletRequest.getSession().getId();
+        return "Welcome Home" + studs.toString() + httpServletRequest.getSession().getId();
     }
     
     @PostMapping("/")
-    public Student postMethodName(@RequestBody Student entity) {
-        //TODO: process POST request
+    public ResponseEntity<Student> postMethodName(@RequestBody Student entity) {
+        
         studs.add(entity);
         
+        return new  ResponseEntity<>(entity,HttpStatus.OK);
+    }
+    
+    @PostMapping(path = "/create")
+    public String addStudent(@RequestBody String entity) {
+        //TODO: process POST request
+        // Student st = (Student)entity;      
         return entity;
     }
     
