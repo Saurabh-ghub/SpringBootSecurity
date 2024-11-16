@@ -42,7 +42,7 @@ public class HomeController {
     }
     
     @PostMapping(path = "/create")
-    public String addStudent(@RequestBody String entity) {
+    public Student addStudent(@RequestBody Student entity) {
         //TODO: process POST request
         // Student st = (Student)entity;      
         return entity;
