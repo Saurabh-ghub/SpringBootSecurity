@@ -18,16 +18,16 @@ public class UserController {
     
     @PostMapping("/register")
     public Users registerUser(@RequestBody Users users) {
-        
-        userService.saveUser(users);
+        Boolean userPresent = userService.isUserPresent(users);
+        if(!userPresent)
+            userService.saveUser(users);
         return users;
     }
 
     @PostMapping("/login")
     public String loginUser(@RequestBody Users users) {
-        //TODO: process POST request
-        System.out.println(users.getUsername());
-        return "success";
+        
+       return userService.verify(users);
     }
 
 }

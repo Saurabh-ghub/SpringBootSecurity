@@ -11,6 +11,7 @@ import com.example.security.repo.UsersRepo;
 
 @Service
 public class UserService {
+    @Autowired
     private JWTService jwtService;
 
     @Autowired
@@ -21,18 +22,28 @@ public class UserService {
 
     BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(12);
 
+    public Boolean isUserPresent(Users users){
+        Users presntuser = usersRepo.findByUsername(users.getUsername());
+        if(presntuser != null){
+            return true;
+        }
+        return false;
+    }
+
     public Users saveUser(Users user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return usersRepo.save(user);
     }
 
     public String verify(Users users) {
-       Authentication authentication =  authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(users.getUsername(), users.getPassword()))
-        if(authentication.isAuthenticated()){
-            return jwtService.generateToken();
+        System.out.println(users.getUsername());
+        System.out.println(users.getPassword());
+        Authentication authentication =  authenticationManager
+                            .authenticate(new UsernamePasswordAuthenticationToken(users.getUsername(), users.getPassword()));
+        
+        if(authentication.isAuthenticated()){   
+            return jwtService.generateToken(users.getUsername());
         }
-        else{
-            return "Invalid Credentials";
-        }
+        return "Invalid Credentials";
     }
 }
