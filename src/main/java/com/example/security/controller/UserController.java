@@ -22,6 +22,12 @@ public class UserController {
         userService.saveUser(users);
         return users;
     }
-    
+
+    @PostMapping("/login")
+    public String loginUser(@RequestBody Users users) {
+        //TODO: process POST request
+        System.out.println(users.getUsername());
+        return "success";
+    }
 
 }
